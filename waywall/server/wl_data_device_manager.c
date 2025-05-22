@@ -15,7 +15,7 @@
 #include <wayland-client-protocol.h>
 #include <wayland-server-protocol.h>
 
-#define SRV_DATA_DEVICE_MANAGER_VERSION 1
+#define SRV_DATA_DEVICE_MANAGER_VERSION 3
 
 struct mime_type {
     struct wl_list link;
@@ -564,6 +564,7 @@ data_device_resource_destroy(struct wl_resource *resource) {
 static void
 data_device_set_selection(struct wl_client *client, struct wl_resource *resource,
                           struct wl_resource *data_source_resource, uint32_t serial) {
+    // resource is the wl_data_device, data_source_resource is the wl_data_source.
     struct server_data_device *src_device = wl_resource_get_user_data(resource);
     struct server_data_device_manager *data_device_manager = src_device->parent;
 
@@ -602,16 +603,10 @@ data_device_set_selection(struct wl_client *client, struct wl_resource *resource
                                  data_device_manager->remote.source,
                                  data_device_manager->server->seat->last_serial);
 
-    if (!data_device_manager->input_focus) {
-        return;
-    }
-    struct wl_client *focus_client =
-        wl_resource_get_client(data_device_manager->input_focus->surface->resource);
-
     struct server_data_device *data_device;
     wl_list_for_each (data_device, &data_device_manager->devices, link) {
-        // The new selection offer should be sent to the client with keyboard focus.
-        if (wl_resource_get_client(data_device->resource) != focus_client) {
+        // offer the selection to all other clients (e.g. ninjabrain bot).
+        if (wl_resource_get_client(data_device->resource) == client) {
             continue;
         }
 
@@ -679,9 +674,15 @@ data_source_offer(struct wl_client *client, struct wl_resource *resource, const 
     wl_list_insert(&data_source->mime_types, &mime_type->link);
 }
 
+static void
+data_source_set_actions(struct wl_client *client, struct wl_resource *resource, uint32_t dnd_actions) {
+    wl_client_post_implementation_error(client, "wl_data_source.set_actions is not implemented");
+}
+
 static const struct wl_data_source_interface data_source_impl = {
     .destroy = data_source_destroy,
     .offer = data_source_offer,
+    .set_actions = data_source_set_actions,
 };
 
 static void

@@ -14,6 +14,7 @@
 #include "server/wp_linux_drm_syncobj.h"
 #include "server/wp_pointer_constraints.h"
 #include "server/wp_relative_pointer.h"
+#include "server/wp_viewporter.h"
 #include "server/xdg_decoration.h"
 #include "server/xdg_shell.h"
 #include "server/xserver.h"
@@ -211,6 +212,10 @@ server_create(struct config *cfg) {
     }
     server->relative_pointer = server_relative_pointer_create(server, cfg);
     if (!server->relative_pointer) {
+        goto fail_globals;
+    }
+    server->viewporter = server_viewporter_create(server, cfg);
+    if (!server->viewporter) {
         goto fail_globals;
     }
     server->shm = server_shm_create(server);

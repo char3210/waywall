@@ -83,15 +83,15 @@ subproc_exec(struct subproc *subproc, char *cmd[static 64]) {
     pid_t pid = fork();
     if (pid == 0) {
         // Child process
-        int out = open("/dev/null", O_WRONLY);
-        if (out == -1) {
-            ww_log_errno(LOG_ERROR, "failed to open /dev/null in child process");
-            exit(EXIT_FAILURE);
-        }
-        if (dup2(out, STDOUT_FILENO) == -1) {
-            ww_log_errno(LOG_ERROR, "failed to duplicate /dev/null to stdout in child process");
-            exit(EXIT_FAILURE);
-        }
+        // int out = open("/dev/null", O_WRONLY);
+        // if (out == -1) {
+        //     ww_log_errno(LOG_ERROR, "failed to open /dev/null in child process");
+        //     exit(EXIT_FAILURE);
+        // }
+        // if (dup2(out, STDOUT_FILENO) == -1) {
+        //     ww_log_errno(LOG_ERROR, "failed to duplicate /dev/null to stdout in child process");
+        //     exit(EXIT_FAILURE);
+        // }
 
         execvp(cmd[0], cmd);
         ww_log_errno(LOG_ERROR, "failed to execvp() in child porcess");

@@ -2,6 +2,7 @@
 #define WAYWALL_SERVER_SERVER_H
 
 #include "config/config.h"
+#include "server/wp_viewporter.h"
 #include <stdbool.h>
 #include <wayland-server-core.h>
 #include <wayland-util.h>
@@ -28,6 +29,7 @@ struct server {
     struct server_output *output;
     struct server_pointer_constraints *pointer_constraints;
     struct server_relative_pointer *relative_pointer;
+    struct server_viewporter *viewporter;
     struct server_seat *seat;
     struct server_shm *shm;
     struct server_xdg_decoration_manager *xdg_decoration;

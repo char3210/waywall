@@ -24,6 +24,7 @@ waywall_src = files(
   'server/wp_linux_dmabuf.c',
   'server/wp_linux_drm_syncobj.c',
   'server/wp_relative_pointer.c',
+  'server/wp_viewporter.c',
   'server/xdg_decoration.c',
   'server/xdg_shell.c',
   'server/xserver.c',

@@ -37,7 +37,7 @@ struct server_data_device_manager {
     struct server_selection_content {
         struct wl_event_source *src_pipe;
 
-        int32_t fd;
+        int32_t fd; // passed to the receiving client?
         char *data;
         ssize_t len;
     } selection_content;

@@ -45,6 +45,10 @@ on_global_bind(struct wl_client *client, void *data, uint32_t version, uint32_t 
     }
 
     wl_list_insert(&output->objects, wl_resource_get_link(resource));
+
+    if (wl_resource_get_version(resource) >= WL_OUTPUT_DONE_SINCE_VERSION) {
+        wl_output_send_done(resource);
+    }
 }
 
 static void
