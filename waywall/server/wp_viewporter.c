@@ -20,7 +20,7 @@ static void wp_viewporter_get_viewport(struct wl_client *client,
                                      struct wl_resource *surface_resource) {
     struct server_viewporter *viewporter = wl_resource_get_user_data(viewporter_resource);
     struct server_surface *surface = server_surface_from_resource(surface_resource);
-    viewporter->server->backend
+    
 }
 
 static struct wp_viewporter_interface viewporter_impl = {
